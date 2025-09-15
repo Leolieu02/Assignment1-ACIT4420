@@ -33,7 +33,7 @@ class SavingsAccount(BankAccount):
     # Applies interest to the balance (increase the balance by multiplying it by (1 + interest rate)
     def apply_interest(self):
         self.balance *=(1 + self.interest_rate / 100) # Balance multiplied by interest rate 3/100
-        return "Total balance after interest: " + str(self.balance) + " NOK"
+        return "Total balance after applying interest: " + str(self.balance) + " NOK"
     
 class CheckingAccount(BankAccount):
     def __init__(self, account_holder, balance, transaction_fee):
