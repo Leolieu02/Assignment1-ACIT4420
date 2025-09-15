@@ -98,8 +98,6 @@ print(checking.deposit(200))
 print()
 print(checking.deposit(-50)) # Cannot deposit negaitve amount
 print()
-print(checking.withdraw(100))
-print()
 print(checking.account_info())
 
 
