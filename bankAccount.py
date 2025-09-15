@@ -1,24 +1,27 @@
 class BankAccount:
-    def __init__(self, account_holder, balance):
+    def __init__(self, account_holder, balance = 0): # inital balance = 0
         self.account_holder = account_holder
-        self.balance = balance
+        self.balance = balance 
 
-    def deposit(self, amount):
-        # Adds the specified amount to the account balance 
-        self.balance += amount 
-        return "The new balance after depositing " + str(amount)  + " NOK, is " + str(self.balance) + " NOK"
+    # Adds the specified amount to the account balance
+    def deposit(self, amount): 
+        if amount < 0: 
+            return "Cannot desposit a negative amount"
+        else:
+            self.balance += amount 
+            return "The new balance after depositing " + str(amount)  + " NOK, is " + str(self.balance) + " NOK"
     
+    # Subtracts the specified amount from the balance, if sufficient funds exist. 
+    # If not, print a message indicating insufficient funds
     def withdraw(self, amount):
-        # Subtracts the specified amount from the balance, if sufficient funds exist. 
-        # If not, print a message indicating insufficient funds
         if amount > self.balance: 
             return "Insufficient funds for " + str(amount) + " NOK withdrawal"
         else: 
             self.balance -= amount
             return str(amount) + " NOK withdrawn from account. Remaining funds: " + str(self.balance) + " NOK"
-        
+    
+    # Return the account holders name and balance 
     def account_info(self):
-        # Return the account holders name and balance 
         return "Account information: \n" + "Name: " + str(self.account_holder) + "\n" + "Balance: " + str(self.balance) + " NOK"
     
     
@@ -27,8 +30,8 @@ class SavingsAccount(BankAccount):
         super().__init__(account_holder, balance)
         self.interest_rate = interest_rate
 
+    # Applies interest to the balance (increase the balance by multiplying it by (1 + interest rate)
     def apply_interest(self):
-        # Applies interest to the balance (increase the balance by multiplying it by (1 + interest rate)
         self.balance *=(1 + self.interest_rate / 100) # Balance multiplied by interest rate 3/100
         return "Total balance after interest: " + str(self.balance) + " NOK"
     
@@ -37,9 +40,9 @@ class CheckingAccount(BankAccount):
         super().__init__(account_holder, balance)
         self.transaction_fee = transaction_fee # A fixed fee (e.g., $1) that is charged for every withdrawal.
 
+    # This method overrides the base class method 
+    # To subtract the transaction fee in addition to the withdrawn amount.
     def withdraw(self, amount):
-        # This method overrides the base class method 
-        # To subtract the transaction fee in addition to the withdrawn amount.
         total_withdrawal = self.transaction_fee + amount
          
         # Check if account has sufficient funds
@@ -53,26 +56,30 @@ class CheckingAccount(BankAccount):
 # Code for testing the different scenarios for the different classes
 # Test BankAccount
 print("=== BankAccount Tests ===")
-acc1 = BankAccount("Alice", 1000)
+acc1 = BankAccount("Peter Parker", 1000)
 print(acc1.account_info())
 print()
 print(acc1.deposit(500))
 print()
+print(acc1.deposit(-50)) # Cannot deposit negaitve amount
+print()
 print(acc1.withdraw(200))
 print()
-print(acc1.withdraw(2000)) # should fail because of insufficient funds 
+print(acc1.withdraw(2000)) # Should fail because of insufficient funds 
 print()
 print(acc1.account_info())
 print()
 
 # Test SavingsAccount
 print("\n=== SavingsAccount Tests ===")
-savings = SavingsAccount("Bob", 2000, 5)  # 5% interest
+savings = SavingsAccount("Tony Stark", 2000, 5)  # 5% interest
 print(savings.account_info())
 print()
-print(savings.apply_interest())  # apply 5% interest to 2000 NOK -> 2100 NOK
+print(savings.apply_interest())  # Apply 5% interest to 2000 NOK -> 2100 NOK
 print()
 print(savings.deposit(400))
+print()
+print(savings.deposit(-50)) # Cannot deposit negaitve amount
 print()
 print(savings.withdraw(500))
 print()
@@ -80,19 +87,20 @@ print(savings.account_info())
 
 # Test CheckingAccount
 print("\n=== CheckingAccount Tests ===")
-checking = CheckingAccount("Charlie", 1500, 1)  # 1 NOK fee per withdrawal
+checking = CheckingAccount("Steve Rodgers", 1500, 1)  # 1 NOK fee per withdrawal
 print(checking.account_info())
 print()
-print(checking.withdraw(300))   # withdraw 300 + transaction fee 1 = 301 NOk
+print(checking.withdraw(300))   # Withdraw 300 + transaction fee 1 = 301 NOk
 print()
-print(checking.withdraw(2000))  # should fail (not enough funds)
+print(checking.withdraw(2000))  # Should fail (not enough funds)
 print()
 print(checking.deposit(200))
+print()
+print(checking.deposit(-50)) # Cannot deposit negaitve amount
 print()
 print(checking.withdraw(100))
 print()
 print(checking.account_info())
 
-        
-        
+
 
